@@ -1,16 +1,19 @@
 <template>
   <div id="app">
-    <TheHeader/>
+    <Main/>
+    <modal-auth/>
   </div>
 </template>
 
 <script>
-import TheHeader from "./components/TheHeader"
+import ModalAuth from './components/ModalAuth.vue';
+import Main from './pages/Main.vue';
 
 export default {
   name: 'App',
   components: {
-    TheHeader,
+    ModalAuth,
+    Main,
   }
 }
 </script>
@@ -22,8 +25,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #FFFFFF;
+  height: 100%;
+  margin: 0;
 }
 body {
   background: #0A1F38;
+  width: 100%;
+  height: 100vh;
 }
 </style>

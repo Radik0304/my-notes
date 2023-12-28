@@ -9,12 +9,8 @@
 </template>
 
 <script>
-
 export default {
   name: 'TheHeader',
-  props: {
-    msg: String
-  }
 }
 </script>
 
