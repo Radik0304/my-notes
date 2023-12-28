@@ -1,18 +1,18 @@
 <template>
   <div id="app">
     <Main/>
-    <modal-auth/>
+    <!-- <modal-auth/> -->
   </div>
 </template>
 
 <script>
-import ModalAuth from './components/ModalAuth.vue';
+// import ModalAuth from './components/ModalAuth.vue';
 import Main from './pages/Main.vue';
 
 export default {
   name: 'App',
   components: {
-    ModalAuth,
+    // ModalAuth,
     Main,
   }
 }

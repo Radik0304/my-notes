@@ -64,6 +64,7 @@ export default {
   background: #0a1f38;
   height: 100%;
   width: 100%;
+  opacity: .7;
   z-index: 9999;
   font-family: "Montserrat";
 
