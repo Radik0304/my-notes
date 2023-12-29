@@ -9,15 +9,20 @@
       </button>
       <div class="modal-auth__content">
         <h2>{{ modal_header }}</h2>
-        <div class="inputs">
+        <div class="inputs" v-if="modal_type === 'auth'">
           <modal-input :input-type="'email'" />
           <modal-input />
+        </div>
+
+        <div class="inputs" v-else-if="modal_type === 'reg'">
+          <modal-input :input-type="'email'" />
+          <modal-input />   
         </div>
         <div class="modal-auth__footer">
           <div v-if="modal_type === 'auth'">
             <span>
               У вас нет аккаунта?
-              <a href="#">Зарегистрируйтесь</a>
+              <button @click="goToReg"> Зарегистрируйтесь </button>
             </span>
             <button class="button button__auth">
               <span>Войти</span>
@@ -26,7 +31,7 @@
           <div v-else>
             <span>
               У вас есть аккаунт?
-              <a href="#">Войти</a>
+              <button @click="goToAuth">Войдите</button>
             </span>
             <button class="button button__registation">
               <span>Зарегистрироваться</span>
@@ -69,6 +74,17 @@ export default {
   methods: {
     closeModal(){
       this.$emit('closeModal')
+    },
+
+    goToReg(){
+      this.modal_header = 'Регистрация'
+
+      this.$emit('changeModal', 'reg')
+    },
+
+    goToAuth() {
+      this.modal_header = 'Авторизация'
+      this.$emit('changeModal', 'auth')
     }
   }
 };
@@ -105,6 +121,8 @@ export default {
       position: absolute;
       right: 20px;
       top: 20px;
+      cursor: pointer;
+
     }
   }
 
@@ -121,10 +139,12 @@ export default {
     }
 
     span {
-      a {
+      button {
         color: #b1c909;
-        text-decoration: none;
+        background: #1b2f46;
+        border: none;
         font-weight: 700;
+        cursor: pointer;
       }
     }
 
@@ -135,6 +155,7 @@ export default {
       border-radius: 32px;
       height: 56px;
       font-size: 20px;
+      cursor: pointer;
 
       &__auth {
         width: 114px;

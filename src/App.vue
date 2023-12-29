@@ -7,6 +7,7 @@
       :modal_type="modal_type"
       v-if="is_open_modal" 
       @closeModal=closeModal
+      @changeModal=changeModal
     />
   </div>
 </template>
@@ -33,14 +34,19 @@ export default {
 
   methods: {
     openModal(typeModal) {
-      console.log('typeModal', typeModal)
       this.is_open_modal = true;
       this.modal_type= typeModal;
     },
 
     closeModal() {
       this.is_open_modal = false;
+    },
+
+    changeModal(changedType) {
+      this.modal_type = changedType;
     }
+
+
   }
 };
 </script>
