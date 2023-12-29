@@ -7,6 +7,7 @@
           alt="close-icon"
         />
       </button>
+
       <div class="modal-auth__content">
         <h2>{{ modal_header }}</h2>
         <div class="inputs" v-if="modal_type === 'auth'">
@@ -16,18 +17,21 @@
 
         <div class="inputs" v-else-if="modal_type === 'reg'">
           <modal-input :input-type="'email'" />
+          <modal-input :input-type="'password'"/>
           <modal-input />   
         </div>
+
         <div class="modal-auth__footer">
           <div v-if="modal_type === 'auth'">
             <span>
               У вас нет аккаунта?
               <button @click="goToReg"> Зарегистрируйтесь </button>
             </span>
-            <button class="button button__auth">
+            <button class="button button__auth" @click="auth">
               <span>Войти</span>
             </button>
           </div>
+
           <div v-else>
             <span>
               У вас есть аккаунт?
@@ -59,7 +63,9 @@ export default {
 
   data: () => ({
       modal_header: '',
-    }),
+      input_email: '',
+      input_password: '',
+  }),
 
   mounted() {
     if(this.modal_type === 'auth') {
@@ -70,6 +76,7 @@ export default {
       this.modal_header = 'Добавление заметки'
     }
   },
+
 
   methods: {
     closeModal(){
@@ -85,6 +92,11 @@ export default {
     goToAuth() {
       this.modal_header = 'Авторизация'
       this.$emit('changeModal', 'auth')
+    },
+
+    auth(email, password) {
+      console.log(email)
+      console.log(password)
     }
   }
 };

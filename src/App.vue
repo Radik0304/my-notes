@@ -3,7 +3,13 @@
     <TheHeader @openModal=openModal />
     <Main />
     <TheNotes/>
-    <TheModal
+    <!-- <TheModal
+      :modal_type="modal_type"
+      v-if="is_open_modal" 
+      @closeModal=closeModal
+      @changeModal=changeModal
+    /> -->
+    <ModalAuth 
       :modal_type="modal_type"
       v-if="is_open_modal" 
       @closeModal=closeModal
@@ -13,18 +19,20 @@
 </template>
 
 <script>
-import TheModal from './components/TheModal.vue';
+// import TheModal from './components/TheModal.vue';
 // import Main from "./pages/Main.vue";
 import TheNotes from './pages/Notes.vue'
 import TheHeader from "./components/TheHeader.vue";
+import ModalAuth from './components/ModalAuth.vue';
 
 export default {
   name: "App",
   components: {
-    TheModal,
+    // TheModal,
     // Main,
     TheNotes,
     TheHeader,
+    ModalAuth,
   },
 
   data: () => ({

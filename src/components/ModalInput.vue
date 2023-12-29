@@ -1,11 +1,9 @@
+<!-- с этим копонентом потом разобраться при рефакторинге -->
+
 <template>
     <div class="modal__input-container">
         <span>{{ input_span }}</span>
-        <input :type="dataType" :placeholder="placeholder_text"/>
-        <!-- <div v-if="dataType === 'password'">
-            <span>Пароль еще раз</span>
-            <input type="text" :placeholder="placeholder_text"/>
-        </div> -->
+        <input :type="dataType" :placeholder="placeholder_text" @input="fuck" v-model="inputValue"/>
         <!-- <button class="button-view">
             <img src="../assets/view-password.svg" alt="">
         </button> -->
@@ -23,11 +21,12 @@ export default {
         icon_button_view_passsword: '../assets/view-password.svg',
         input_span: '',
         placeholder_text: '',
-        dataType: 'text'
+        dataType: 'text',
+        inputValue: ''
+
     }),
 
     mounted() {
-        // this.inputType === 'email' ? this.input_span = 'Email' : 'Пароль'
         if(this.inputType === 'email') {
             this.dataType = 'email'
             this.input_span = 'Email'
@@ -38,13 +37,16 @@ export default {
         } else if (this.inputType === 'text') {
             this.input_span = 'Текст заметки'
             this.placeholder_text = 'Введите текст'
-        } else {
+        } else if(this.inputType === 'password') {
             this.dataType = 'password'
             this.input_span = 'Пароль'
             this.placeholder_text = 'Введите пароль'
+        } else {
+            this.dataType = 'password'
+            this.input_span = 'Пароль еще раз'
+            this.placeholder_text = 'Повторите пароль'
         }
-    }
-
+    },
 }
 </script>
 
