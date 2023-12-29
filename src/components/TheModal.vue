@@ -1,20 +1,20 @@
 <template>
   <div class="modal-auth">
     <div class="modal-auth__container">
-      <button class="button-close">
+      <button class="button-close" @click="closeModal">
         <img
           src="../assets/closeIcon.svg"
           alt="close-icon"
         />
       </button>
       <div class="modal-auth__content">
-        <h2>Вход в ваш аккаунт</h2>
+        <h2>{{ modal_header }}</h2>
         <div class="inputs">
           <modal-input :input-type="'email'" />
           <modal-input />
         </div>
         <div class="modal-auth__footer">
-          <div>
+          <div v-if="modal_type === 'auth'">
             <span>
               У вас нет аккаунта?
               <a href="#">Зарегистрируйтесь</a>
@@ -23,7 +23,7 @@
               <span>Войти</span>
             </button>
           </div>
-          <div>
+          <div v-else>
             <span>
               У вас есть аккаунт?
               <a href="#">Войти</a>
@@ -42,14 +42,33 @@
 import ModalInput from "./ModalInput.vue";
 
 export default {
-  name: "ModalAuth",
+  name: "TheModal",
   components: {
     ModalInput,
   },
   props: {
-    is_auth: {
-      type: Boolean,
-      default: true
+    modal_type: {
+      type: String,
+    },
+  },
+
+  data: () => ({
+      modal_header: '',
+    }),
+
+  mounted() {
+    if(this.modal_type === 'auth') {
+      this.modal_header = 'Вход в ваш аккаунт'
+    } else if (this.modal_type === 'reg') {
+      this.modal_header = 'Регистрация'
+    } else {
+      this.modal_header = 'Добавление заметки'
+    }
+  },
+
+  methods: {
+    closeModal(){
+      this.$emit('closeModal')
     }
   }
 };
@@ -60,11 +79,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
   background: #0a1f38;
+  position: absolute;
   height: 100%;
   width: 100%;
-  opacity: .7;
   z-index: 9999;
   font-family: "Montserrat";
 
@@ -92,7 +110,15 @@ export default {
 
   &__footer {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    margin-top: 54px;
+
+    div {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
     span {
       a {
@@ -108,6 +134,7 @@ export default {
       border: none;
       border-radius: 32px;
       height: 56px;
+      font-size: 20px;
 
       &__auth {
         width: 114px;
@@ -118,20 +145,20 @@ export default {
       }
     }
 
-    &__content {
-      margin: 80px;
-      font-size: 18px;
+  }
+  &__content {
+    margin: 80px;
+    font-size: 18px;
 
-      h2 {
-        font-weight: 600;
-        font-size: 48px;
-      }
+    h2 {
+      font-weight: 600;
+      font-size: 48px;
+    }
 
-      .inputs {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-      }
+    .inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
     }
   }
 }

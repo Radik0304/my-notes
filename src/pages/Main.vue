@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-      <TheHeader/>
+      <!-- <TheHeader/> -->
       <div class="main__content">
         <section class="main__content-titles">
           <h1>Мои заметки</h1>
@@ -14,24 +14,17 @@
   </template>
   
   <script>
-  import TheHeader from "../components/TheHeader.vue";
+  // import TheHeader from "../components/TheHeader.vue";
   
   export default {
     name: 'MainPage',
     components: {
-      TheHeader,
+      // TheHeader,
     }
   }
   </script>
   
   <style lang="scss">
-  #app {
-    font-family: 'Montserrat';
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-  }
-
   .main {
     height: 100%;
     display: flex;
@@ -97,28 +90,6 @@
         max-width: 320px;
       }
     }
-
-    h3 {
-      font-weight: 400;
-      font-size: 32px;
-      color: #9DA5AF;
-      line-height: 48px;
-      max-width: 394px;
-
-      @media (max-width: 620px) {
-        font-size: 24px;
-        line-height: 24px;
-        max-width: 320px;
-      }
-    }
-    h1, h3 {
-      text-align: start;
-      
-      @media (max-width: 960px) {
-        text-align: center;
-      }
-    }
-
   }
   </style>
   
