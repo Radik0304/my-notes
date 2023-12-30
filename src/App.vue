@@ -20,7 +20,7 @@
 
 <script>
 // import TheModal from './components/TheModal.vue';
-// import Main from "./pages/Main.vue";
+import Main from "./pages/Main.vue";
 import TheNotes from './pages/Notes.vue'
 import TheHeader from "./components/TheHeader.vue";
 import ModalAuth from './components/ModalAuth.vue';
@@ -29,7 +29,7 @@ export default {
   name: "App",
   components: {
     // TheModal,
-    // Main,
+    Main,
     TheNotes,
     TheHeader,
     ModalAuth,

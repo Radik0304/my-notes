@@ -31,7 +31,20 @@ export default {
   methods: {
     openAuthModal() {
       this.$emit('openModal', 'auth')
-    }
+    },
+  },
+
+  async created() {
+    await fetch("https://dist.nd.ru/api/auth",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        }
+      )
+      .then(response => response.json())
+        .then(data => this.login = data.email)
   }
 
 }

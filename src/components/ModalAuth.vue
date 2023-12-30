@@ -93,13 +93,16 @@
             </span>
             <button
               class="button button__registation"
+              @click="registation"
             >
               <span>Зарегистрироваться</span>
             </button>
           </div>
-
         </div>
-        <span class="login-error" v-if="login_error">
+        <span
+          class="login-error"
+          v-if="login_error"
+        >
           Пользователь с таким логином не найден
         </span>
       </div>
@@ -126,7 +129,7 @@ export default {
     input_email: "",
     input_password: "",
     input_confirm_password: "",
-    login_error: false
+    login_error: false,
   }),
 
   mounted() {
@@ -154,13 +157,44 @@ export default {
       this.$emit("changeModal", "auth");
     },
 
+    // авторизация
     async auth() {
       const authData = {
         email: this.input_email,
         password: this.input_password,
       };
+      await fetch("https://dist.nd.ru/api/auth", {
+        method: "POST",
+        body: JSON.stringify(authData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(response => {
+            response.json()
+                .then(data => {
+                    localStorage.setItem(
+                    "token",
+                    data.accessToken
+                    );
+                })
+            })
+            .catch(err => {
+                console.log(err);
+                this.login_error = true;
+            });
+    },
+
+    // регистрация
+    async registation() {
+      const authData = {
+        email: this.input_email,
+        password: this.input_password,
+        confirm_password:
+          this.input_confirm_password,
+      };
       const response = await fetch(
-        "https://dist.nd.ru/api/auth",
+        "https://dist.nd.ru/api/reg",
         {
           method: "POST",
           body: JSON.stringify(authData),
@@ -170,9 +204,10 @@ export default {
         }
       );
       if (response.ok) {
-        console.log('данные отправились')
+        console.log(response);
+        this.goToAuth();
       } else {
-        this.login_error = true
+        this.login_error = true;
       }
     },
   },
@@ -184,8 +219,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #0a1f38;
+  background: rgba(10, 31, 56, .7);
   position: absolute;
+  top: 0;
   height: 100%;
   width: 100%;
   z-index: 9999;
@@ -198,12 +234,12 @@ export default {
     background: #1b2f46;
     border-radius: 40px;
 
-    .login-error{
-        background: #FF74611A;
-        color: #FF7461;
-        border-radius: 24px;
-        display: block;
-        margin-top: 20px;
+    .login-error {
+      background: #ff74611a;
+      color: #ff7461;
+      border-radius: 24px;
+      display: block;
+      margin-top: 20px;
     }
 
     .button-close {
