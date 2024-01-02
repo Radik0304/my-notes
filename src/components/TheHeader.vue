@@ -7,10 +7,15 @@
     </button>
 
     <div v-else class="header__login-container">
-      <span class="header__login">{{ login }}</span>
-      <button class="header__button-exit">
-        <img src="../assets/user.svg" alt="user-icon">
-      </button>
+      <span class="header__login">{{ props.login }}</span>
+      <div class="unauth__container">
+        <button class="header__button-exit" @click="exit">
+          <img src="../assets/user.svg" alt="user-icon">
+        </button>
+        <div class="unauth__dropdown-content">
+          <button @click="exit">Выйти</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -18,35 +23,80 @@
 <script>
 export default {
   name: 'TheHeader',
+  props: {
+    is_auth: Boolean,
+    login: String,
+  },
 
-  data: () => ({
-    login: '',
-    is_auth: false,
-  }),
+  // data: () => ({
+  //   login: '',
+  //   is_auth: false,
+  // }),
+
+  created() {
+    console.log('created', this.login)
+  },
 
   mounted() {
-    this.is_auth = !!this.login
+    console.log('mounted', this.login)
   },
+
+  // async mounted() {
+  //   this.is_auth = !!this.login
+  //   await fetch("https://dist.nd.ru/api/auth",
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem('token')}`
+  //         },
+  //       }
+  //     )
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       this.$emit('authStatus', true)
+  //       this.login = data.email
+  //       this.is_auth = !!this.login
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+
+  // },
 
   methods: {
     openAuthModal() {
       this.$emit('openModal', 'auth')
     },
+
+    async exit(){
+      await fetch("https://dist.nd.ru/api/auth",
+        {
+          method: "DELETE"
+        })
+        localStorage.removeItem('token')
+    }
   },
 
-  async created() {
-    await fetch("https://dist.nd.ru/api/auth",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          },
-        }
-      )
-      .then(response => response.json())
-        .then(data => this.login = data.email)
-  }
+  // async create() {
+  //   await fetch("https://dist.nd.ru/api/auth",
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem('token')}`
+  //         },
+  //       }
+  //     )
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       this.login = data.email
+  //       this.is_auth = !!this.login
+  //       this.$emit('authStatus', true)
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
 
+  // },
 }
 </script>
 
@@ -90,6 +140,11 @@ export default {
       border: none;
       background: #1B2F46;
       border-radius: 56px;
+      cursor: pointer;
+
+      &:hover {
+        background: #9DA5AF;
+      }
     }
 
   }
@@ -111,6 +166,35 @@ export default {
       align-content: center;
       gap: 12px;
     }
+  }
+
+  .unauth {
+    &__container {
+      position: relative;
+      display: inline-block;
+
+      
+      &:hover .unauth__dropdown-content {
+        display: block;
+      }
+    }
+    &__dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      z-index: 1;
+      
+      button {
+        cursor: pointer;
+        background: #9DA5AF;
+        border: none;
+
+        &:hover {
+          background: #97AB0D;
+        }
+      }
+    }
+
   }
 }
 </style>

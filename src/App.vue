@@ -1,8 +1,13 @@
 <template>
   <div id="app">
     <TheHeader @openModal=openModal />
-    <Main />
-    <TheNotes/>
+    <TheMainPage v-if="!is_auth"/>
+    <TheNotesPage
+      v-else
+      :is-auth="is_auth"
+      :login="username"
+      @authStatus="authStatus"
+    />
     <!-- <TheModal
       :modal_type="modal_type"
       v-if="is_open_modal" 
@@ -14,14 +19,15 @@
       v-if="is_open_modal" 
       @closeModal=closeModal
       @changeModal=changeModal
+      @login="login"
     />
   </div>
 </template>
 
 <script>
 // import TheModal from './components/TheModal.vue';
-import Main from "./pages/Main.vue";
-import TheNotes from './pages/Notes.vue'
+import TheMainPage from "./pages/Main.vue";
+import TheNotesPage from './pages/Notes.vue'
 import TheHeader from "./components/TheHeader.vue";
 import ModalAuth from './components/ModalAuth.vue';
 
@@ -29,8 +35,8 @@ export default {
   name: "App",
   components: {
     // TheModal,
-    Main,
-    TheNotes,
+    TheMainPage,
+    TheNotesPage,
     TheHeader,
     ModalAuth,
   },
@@ -38,6 +44,8 @@ export default {
   data: () => ({
     is_open_modal: false,
     modal_type: '',
+    username: '',
+    is_auth: false,
   }),
 
   methods: {
@@ -52,10 +60,36 @@ export default {
 
     changeModal(changedType) {
       this.modal_type = changedType;
+    },
+
+    authStatus(isAuth){
+      console.log( 'выхывается')
+      this.is_auth_user = isAuth;
+    },
+
+    async login() {
+      await fetch("https://dist.nd.ru/api/auth",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        }
+      )
+      .then(response => response.json())
+      .then(data => {
+        this.username = data.email
+        this.is_auth = !!this.login
+      })
+      .catch(err => {
+        console.log(err);
+      });
     }
+  },
 
-
-  }
+  async mounted() {
+    this.login()
+  },
 };
 </script>
 

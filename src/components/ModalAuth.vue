@@ -77,6 +77,7 @@
               </button>
             </span>
             <button
+              type="submit"
               class="button button__auth"
               @click="auth"
             >
@@ -177,8 +178,12 @@ export default {
                     "token",
                     data.accessToken
                     );
+                    this.closeModal()
+                    this.$emit('login')
+                    console.log(localStorage)
                 })
             })
+            //позже поработать с этим, не срабатывает
             .catch(err => {
                 console.log(err);
                 this.login_error = true;
@@ -204,7 +209,6 @@ export default {
         }
       );
       if (response.ok) {
-        console.log(response);
         this.goToAuth();
       } else {
         this.login_error = true;
@@ -229,7 +233,6 @@ export default {
 
   &__container {
     width: 780px;
-    height: 672px;
     position: relative;
     background: #1b2f46;
     border-radius: 40px;

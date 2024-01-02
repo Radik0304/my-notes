@@ -17,7 +17,7 @@
   // import TheHeader from "../components/TheHeader.vue";
   
   export default {
-    name: 'MainPage',
+    name: 'TheMainPage',
     components: {
       // TheHeader,
     }

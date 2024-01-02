@@ -10,7 +10,7 @@
 
 
 export default {
-    name: 'TheNotes'
+    name: 'TheNotesPage'
 }
 </script>
 
