@@ -2,11 +2,27 @@
 
 <template>
     <div class="modal__input-container">
-        <span>{{ input_span }}</span>
-        <input :type="dataType" :placeholder="placeholder_text" @input="fuck" v-model="inputValue"/>
+        <label :for="inputType">{{ input_span }}</label>
+        <input
+            maxlength="100"
+            v-if="inputType !=='text'"
+            :type="dataType"
+            :placeholder="placeholder_text"
+            v-model="inputValue"
+            :id="inputType"
+        />
         <!-- <button class="button-view">
             <img src="../assets/view-password.svg" alt="">
         </button> -->
+        <textarea
+            name="note-text"
+            v-else
+            maxlength="500"
+            :id="inputType"
+            cols="30" rows="10"
+            :class="[inputType === 'text' ? 'input-text' : ' ']"
+        >
+        </textarea>
     </div>
 </template>
 
@@ -47,6 +63,8 @@ export default {
             this.placeholder_text = 'Повторите пароль'
         }
     },
+
+    
 }
 </script>
 
@@ -67,9 +85,18 @@ export default {
         &::placeholder {
             color: #9DA5AF;
         }
+
+
     }
 
-    span {
+    .input-text {
+        height: 244px;
+        border-radius: 36px;
+        padding: 16px;
+        border: none;
+    }
+
+    label {
         display: flex;
         margin-left: 24px;
         margin-bottom: 8px;

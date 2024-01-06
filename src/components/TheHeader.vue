@@ -1,13 +1,13 @@
 <template>
   <div class="header">
     <img src="../assets/logo.svg" alt="notes-logo" class="header__logo"/>
-    <button class="header__button-auth" v-if="!is_auth" @click="openAuthModal">
+    <button class="header__button-auth" v-if="!login" @click="openAuthModal">
       <img src="../assets/authButtonIcon.svg" alt="ath-icon">
       <span>Вход</span>
     </button>
 
     <div v-else class="header__login-container">
-      <span class="header__login">{{ props.login }}</span>
+      <span class="header__login">{{ login }}</span>
       <div class="unauth__container">
         <button class="header__button-exit" @click="exit">
           <img src="../assets/user.svg" alt="user-icon">
@@ -24,44 +24,34 @@
 export default {
   name: 'TheHeader',
   props: {
-    is_auth: Boolean,
-    login: String,
+    username: {
+      type: String,
+    },
   },
 
-  // data: () => ({
-  //   login: '',
-  //   is_auth: false,
-  // }),
+  data: () => ({
+    login: '',
+  }),
 
-  created() {
-    console.log('created', this.login)
+  async mounted() {
+    await fetch("https://dist.nd.ru/api/auth",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        }
+      )
+      .then(response => response.json())
+      .then(data => {
+        this.$emit('authStatus', true)
+        this.login = data.email
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
   },
-
-  mounted() {
-    console.log('mounted', this.login)
-  },
-
-  // async mounted() {
-  //   this.is_auth = !!this.login
-  //   await fetch("https://dist.nd.ru/api/auth",
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem('token')}`
-  //         },
-  //       }
-  //     )
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       this.$emit('authStatus', true)
-  //       this.login = data.email
-  //       this.is_auth = !!this.login
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-
-  // },
 
   methods: {
     openAuthModal() {

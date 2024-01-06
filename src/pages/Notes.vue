@@ -1,16 +1,30 @@
 <template>
     <div class="notes">
-        <button class="add-note">
-            <img src="../assets/add-note.svg" alt="add-note-icon">
-        </button>
+        <div class="notes__list">
+            <OneNote/>
+        </div>
+        <div class="notes__footer">
+            <button class="add-note" @click="openModal">
+                <img src="../assets/add-note.svg" alt="add-note-icon">
+            </button>
+        </div>
     </div>
 </template>
 
 <script>
-
+import OneNote from '@/components/OneNote.vue'
 
 export default {
-    name: 'TheNotesPage'
+    name: 'TheNotesPage',
+    components: {
+        OneNote,
+    },
+
+    methods: {
+        openModal() {
+            this.$emit('openModalNote', true)
+        },
+    },
 }
 </script>
 
@@ -25,6 +39,11 @@ export default {
             position: absolute;
             bottom: 40px;
             right: 40px;
+            cursor: pointer;
+        }
+        &__list {
+            display: grid;
+            justify-content: center;
         }
     }
 </style>
