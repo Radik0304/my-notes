@@ -8,12 +8,9 @@
             v-if="inputType !=='text'"
             :type="dataType"
             :placeholder="placeholder_text"
-            v-model="inputValue"
             :id="inputType"
+            v-model="inputValue"
         />
-        <!-- <button class="button-view">
-            <img src="../assets/view-password.svg" alt="">
-        </button> -->
         <textarea
             name="note-text"
             v-else
@@ -21,6 +18,7 @@
             :id="inputType"
             cols="30" rows="10"
             :class="[inputType === 'text' ? 'input-text' : ' ']"
+            v-model="textareaValue"
         >
         </textarea>
     </div>
@@ -38,8 +36,8 @@ export default {
         input_span: '',
         placeholder_text: '',
         dataType: 'text',
-        inputValue: ''
-
+        inputValue: '',
+        textareaValue: '',
     }),
 
     mounted() {
@@ -64,7 +62,15 @@ export default {
         }
     },
 
-    
+    watch: {
+        inputValue() {
+            this.$emit('getInputValue', this.inputValue)
+        },
+
+        textareaValue() {
+            this.$emit('getTextareaValue', this.textareaValue)
+        }
+    }
 }
 </script>
 

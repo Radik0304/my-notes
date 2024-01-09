@@ -30,6 +30,9 @@ export default {
 
 <style lang="scss">
     .notes {
+        width: 100%;
+        height: 100%;
+        
         .add-note {
             width: 56px;
             height: 56px;

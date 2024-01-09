@@ -44,7 +44,6 @@ export default {
       )
       .then(response => response.json())
       .then(data => {
-        this.$emit('authStatus', true)
         this.login = data.email
       })
       .catch(err => {
@@ -66,27 +65,6 @@ export default {
         localStorage.removeItem('token')
     }
   },
-
-  // async create() {
-  //   await fetch("https://dist.nd.ru/api/auth",
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem('token')}`
-  //         },
-  //       }
-  //     )
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       this.login = data.email
-  //       this.is_auth = !!this.login
-  //       this.$emit('authStatus', true)
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-
-  // },
 }
 </script>
 

@@ -106,19 +106,21 @@
         >
           Пользователь с таким логином не найден
         </span>
+        <span
+          class="login-error"
+          v-if="registration_error"
+        >
+          Проверьте введеные данные
+        </span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import ModalInput from "./ModalInput.vue";
-
 export default {
   name: "TheModal",
-  components: {
-    // ModalInput,
-  },
+  components: {},
   props: {
     modal_type: {
       type: String,
@@ -131,6 +133,7 @@ export default {
     input_password: "",
     input_confirm_password: "",
     login_error: false,
+    registration_error: false,
   }),
 
   mounted() {
@@ -170,24 +173,20 @@ export default {
         headers: {
           "Content-Type": "application/json",
         },
-      })
-        .then(response => {
-            response.json()
-                .then(data => {
-                    localStorage.setItem(
-                    "token",
-                    data.accessToken
-                    );
-                    this.closeModal()
-                    this.$emit('login')
-                    console.log(localStorage)
-                })
-            })
-            //позже поработать с этим, не срабатывает
-            .catch(err => {
-                console.log(err);
-                this.login_error = true;
-            });
+      }).then((response) => {
+        if (response.ok) {
+          this.closeModal();
+        } else {
+          this.login_error = true;
+          return;
+        }
+        response.json().then((data) => {
+          localStorage.setItem(
+            "token",
+            data.accessToken
+          );
+        });
+      });
     },
 
     // регистрация
@@ -210,8 +209,9 @@ export default {
       );
       if (response.ok) {
         this.goToAuth();
+        this.registration_error = false;
       } else {
-        this.login_error = true;
+        this.registration_error = true;
       }
     },
   },
@@ -223,7 +223,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(10, 31, 56, .7);
+  background: rgba(10, 31, 56, 0.7);
   position: absolute;
   top: 0;
   height: 100%;

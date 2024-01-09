@@ -1,12 +1,9 @@
 <template>
   <div id="app">
     <TheHeader @openModal=openModal />
-    <!-- <TheMainPage v-if="!username"/>
+    <TheMainPage v-if="!username"/>
     <TheNotesPage
-      v-else
-      @authStatus="authStatus"
-    /> -->
-    <TheNotesPage
+      v-if="username"
       @authStatus="authStatus"
       @openModalNote=openModalNote
     />
@@ -15,7 +12,6 @@
       v-if="is_open_modal" 
       @closeModal=closeModal
       @changeModal=changeModal
-      @login=login
     />
     <NewNoteModal
       v-if="is_open_modal_note"
@@ -25,8 +21,7 @@
 </template>
 
 <script>
-// import TheModal from './components/TheModal.vue';
-// import TheMainPage from "./pages/Main.vue";
+import TheMainPage from "./pages/Main.vue";
 import TheNotesPage from './pages/Notes.vue'
 import TheHeader from "./components/TheHeader.vue";
 import ModalAuth from './components/ModalAuth.vue';
@@ -35,8 +30,7 @@ import NewNoteModal from './components/NewNoteModal.vue';
 export default {
   name: "App",
   components: {
-    // TheModal,
-    // TheMainPage,
+    TheMainPage,
     TheNotesPage,
     TheHeader,
     ModalAuth,
@@ -48,7 +42,6 @@ export default {
     is_open_modal_note: false,
     modal_type: '',
     username: '',
-    is_auth: false,
   }),
 
   methods: {
@@ -77,27 +70,27 @@ export default {
       this.is_auth_user = isAuth;
     },
 
-    // async login() {
-    //   await fetch("https://dist.nd.ru/api/auth",
-    //     {
-    //       method: "GET",
-    //       headers: {
-    //         Authorization: `Bearer ${localStorage.getItem('token')}`
-    //       },
-    //     }
-    //   )
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     this.username = data.email
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-    // }
+    async login() {
+      await fetch("https://dist.nd.ru/api/auth",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        }
+      )
+      .then(response => response.json())
+      .then(data => {
+        this.username = data.email
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
   },
-  // async mounted() {
-  //   this.login()
-  // }
+  async mounted() {
+    this.login()
+  }
 };
 </script>
 

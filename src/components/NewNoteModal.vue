@@ -16,11 +16,15 @@
         <modal-input 
           :inputType="'note'"
           class="input__note-name"
+          @getInputValue=getInputValue
         />
         <modal-input 
           :inputType="'text'"
+          @getTextareaValue=getTextareaValue
         />
-        <div class="modal-note__footer"></div>
+        <div class="modal-note__footer">
+          <button class="button" @click="addNote">Добавить</button>
+        </div>
       </div>
     </div>
   </div>
@@ -37,8 +41,8 @@ export default {
 
   data: () => ({
     modal_header: "Добавление заметки",
-    input_email: "",
-    input_password: "",
+    input_value: '',
+    textarea_value: '',
   }),
 
   methods: {
@@ -46,20 +50,34 @@ export default {
       this.$emit('openModalNote', false)
     },
 
-    goToReg() {
-      this.modal_header = "Регистрация";
-
-      this.$emit("changeModal", "reg");
+    getInputValue(inputValue){
+        this.input_value = inputValue;
     },
 
-    goToAuth() {
-      this.modal_header = "Авторизация";
-      this.$emit("changeModal", "auth");
+    getTextareaValue(textareaValue) {
+      this.textarea_value = textareaValue;
     },
+    
 
-    auth(email, password) {
-      console.log(email);
-      console.log(password);
+    async addNote() {
+      const data = {
+        title: this.input_value,
+        content: this.textarea_value,
+      }
+      const response = await fetch('https://dist.nd.ru/api/notes',
+        {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }
+      );
+      if(response.ok) {
+        alert('Заметка создана')
+      } else {
+        alert('Ошибка создания заявки')
+      }
     },
   },
 };
@@ -70,8 +88,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #0a1f38;
+  background: rgba(10, 31, 56, .7);
   position: absolute;
+  top: 0;
   height: 100%;
   width: 100%;
   z-index: 9999;
@@ -103,7 +122,7 @@ export default {
   &__footer {
     display: flex;
     justify-content: center;
-    margin-top: 54px;
+    margin-top: 8px;
 
     div {
       width: 100%;
@@ -111,34 +130,18 @@ export default {
       align-items: center;
       justify-content: space-between;
     }
-
-    span {
       button {
-        color: #b1c909;
-        background: #1b2f46;
+        font-family: "Montserrat";
+        color: #fff;
+        background: #b1c909;
         border: none;
-        font-weight: 700;
+        font-weight: 500;
+        font-size: 20px;
         cursor: pointer;
+        width: 150px;
+        height: 56px;
+        border-radius: 32px;
       }
-    }
-
-    .button {
-      background: #b1c909;
-      color: #fff;
-      border: none;
-      border-radius: 32px;
-      height: 56px;
-      font-size: 20px;
-      cursor: pointer;
-
-      &__note {
-        width: 114px;
-      }
-
-      &__registration {
-        width: 210px;
-      }
-    }
   }
   &__content {
     margin: 80px;
