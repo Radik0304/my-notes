@@ -24,16 +24,14 @@
 export default {
   name: 'TheHeader',
   props: {
-    username: {
-      type: String,
-    },
+    username: String,
   },
 
   data: () => ({
     login: '',
   }),
 
-  async mounted() {
+  async created() {
     await fetch("https://dist.nd.ru/api/auth",
         {
           method: "GET",
@@ -45,11 +43,13 @@ export default {
       .then(response => response.json())
       .then(data => {
         this.login = data.email
+        if(this.login) {
+          this.$emit('authStatus', true)
+        }
       })
       .catch(err => {
         console.log(err);
       });
-
   },
 
   methods: {
@@ -62,7 +62,10 @@ export default {
         {
           method: "DELETE"
         })
-        localStorage.removeItem('token')
+            localStorage.removeItem('token')
+            if(!this.login) {
+              this.$emit('authStatus', false)
+            }
     }
   },
 }

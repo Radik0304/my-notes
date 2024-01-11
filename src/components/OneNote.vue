@@ -1,7 +1,7 @@
 <template>
   <div class="one-note">
-    <h4>Заголовок заметки</h4>
-    <span>Тут текст заметки</span>
+    <h4>{{ note_header }}</h4>
+    <span>{{ note_text }}</span>
     <button>
       <img src="../assets/closeIcon.svg" />
       Удалить
@@ -12,6 +12,10 @@
 <script>
 export default {
   name: "OneNote",
+  props: {
+    note_header: String,
+    note_text: String,
+  }
 };
 </script>
 

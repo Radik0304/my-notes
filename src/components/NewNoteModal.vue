@@ -70,13 +70,14 @@ export default {
           body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           }
         }
       );
       if(response.ok) {
-        alert('Заметка создана')
+        console.log('Заметка создана')
       } else {
-        alert('Ошибка создания заявки')
+        console.log('Ошибка создания заявки')
       }
     },
   },

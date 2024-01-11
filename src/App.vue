@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <TheHeader @openModal=openModal />
-    <TheMainPage v-if="!username"/>
+    <TheHeader @openModal=openModal @authStatus=authStatus />
     <TheNotesPage
-      v-if="username"
+      v-if="is_auth_user"
       @authStatus="authStatus"
       @openModalNote=openModalNote
     />
+    <TheMainPage v-else/>
     <ModalAuth 
       :modal_type="modal_type"
       v-if="is_open_modal" 
@@ -41,7 +41,7 @@ export default {
     is_open_modal: false,
     is_open_modal_note: false,
     modal_type: '',
-    username: '',
+    is_auth_user: false,
   }),
 
   methods: {
@@ -69,28 +69,7 @@ export default {
     authStatus(isAuth){
       this.is_auth_user = isAuth;
     },
-
-    async login() {
-      await fetch("https://dist.nd.ru/api/auth",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          },
-        }
-      )
-      .then(response => response.json())
-      .then(data => {
-        this.username = data.email
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    }
   },
-  async mounted() {
-    this.login()
-  }
 };
 </script>
 
