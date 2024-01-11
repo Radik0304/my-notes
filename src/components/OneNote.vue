@@ -2,7 +2,7 @@
   <div class="one-note">
     <h4>{{ note_header }}</h4>
     <span>{{ note_text }}</span>
-    <button>
+    <button @click="deleteNote">
       <img src="../assets/closeIcon.svg" />
       Удалить
     </button>
@@ -15,6 +15,25 @@ export default {
   props: {
     note_header: String,
     note_text: String,
+    note_id: Number,
+  },
+
+  methods: {
+    async deleteNote() {
+      const response = await fetch(`https://dist.nd.ru/api/notes/${this.note_id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        }
+      )
+      if(response.ok) {
+        console.log('заметка удалена')
+      } else {
+        console.log('ошибка удаления')
+      }
+    }
   }
 };
 </script>

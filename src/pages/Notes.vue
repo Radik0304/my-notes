@@ -4,6 +4,7 @@
       <OneNote
         :note_header="note.title"
         :note_text="note.content"
+        :note_id="note.id"
       />
     </div>
     <div class="notes__footer">
@@ -48,7 +49,6 @@ export default {
       .then(response => response.json())
       .then(data => {
           this.notes = data
-          console.log(this.notes)
       })
       .catch(err => {
         console.log(err);

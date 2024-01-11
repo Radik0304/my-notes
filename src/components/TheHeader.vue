@@ -1,16 +1,34 @@
 <template>
   <div class="header">
-    <img src="../assets/logo.svg" alt="notes-logo" class="header__logo"/>
-    <button class="header__button-auth" v-if="!login" @click="openAuthModal">
-      <img src="../assets/authButtonIcon.svg" alt="ath-icon">
+    <img
+      src="../assets/logo.svg"
+      alt="notes-logo"
+      class="header__logo"
+    />
+    <button
+      class="header__button-auth"
+      v-if="!login"
+      @click="openAuthModal"
+    >
+      <img
+        src="../assets/authButtonIcon.svg"
+        alt="ath-icon"
+      />
       <span>Вход</span>
     </button>
 
     <div v-else class="header__login-container">
-      <span class="header__login">{{ login }}</span>
+      <span class="header__login">{{
+        login
+      }}</span>
       <div class="unauth__container">
-        <button class="header__button-exit" @click="exit">
-          <img src="../assets/user.svg" alt="user-icon">
+        <button
+          class="header__button-exit"
+        >
+          <img
+            src="../assets/user.svg"
+            alt="user-icon"
+          />
         </button>
         <div class="unauth__dropdown-content">
           <button @click="exit">Выйти</button>
@@ -22,53 +40,52 @@
 
 <script>
 export default {
-  name: 'TheHeader',
+  name: "TheHeader",
   props: {
     username: String,
   },
 
   data: () => ({
-    login: '',
+    login: "",
   }),
 
   async created() {
-    await fetch("https://dist.nd.ru/api/auth",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          },
-        }
-      )
-      .then(response => response.json())
-      .then(data => {
-        this.login = data.email
-        if(this.login) {
-          this.$emit('authStatus', true)
+    await fetch("https://dist.nd.ru/api/auth", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(
+          "token"
+        )}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        this.login = data.email;
+        if (this.login) {
+          this.$emit("authStatus", true);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   },
 
   methods: {
     openAuthModal() {
-      this.$emit('openModal', 'auth')
+      this.$emit("openModal", "auth");
     },
 
-    async exit(){
-      await fetch("https://dist.nd.ru/api/auth",
-        {
-          method: "DELETE"
-        })
-            localStorage.removeItem('token')
-            if(!this.login) {
-              this.$emit('authStatus', false)
-            }
-    }
+    async exit() {
+      await fetch("https://dist.nd.ru/api/auth", {
+        method: "DELETE",
+      });
+      localStorage.removeItem("token");
+      if (!this.login) {
+        this.$emit("authStatus", false);
+      }
+    },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
@@ -77,14 +94,14 @@ export default {
   justify-content: space-around;
   align-items: center;
   margin-top: 40px;
-  
+
   @media (max-width: 1366px) {
     margin-top: 20px;
   }
 
   &__button {
     &-auth {
-      background: #B1C909;
+      background: #b1c909;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -94,13 +111,13 @@ export default {
       border-radius: 32px;
       border: none;
       color: #fff;
-      font-family: 'Montserrat';
+      font-family: "Montserrat";
       font-size: 20px;
       font-weight: 500;
 
       &:hover {
-        background: #97AB0D;
-        transition: all .3s ease-in-out;
+        background: #97ab0d;
+        transition: all 0.3s ease-in-out;
         cursor: pointer;
       }
     }
@@ -109,15 +126,14 @@ export default {
       width: 56px;
       height: 56px;
       border: none;
-      background: #1B2F46;
+      background: #1b2f46;
       border-radius: 56px;
       cursor: pointer;
 
       &:hover {
-        background: #9DA5AF;
+        background: #9da5af;
       }
     }
-
   }
 
   &__logo {
@@ -144,7 +160,6 @@ export default {
       position: relative;
       display: inline-block;
 
-      
       &:hover .unauth__dropdown-content {
         display: block;
       }
@@ -154,18 +169,17 @@ export default {
       position: absolute;
       background-color: #f1f1f1;
       z-index: 1;
-      
+
       button {
         cursor: pointer;
-        background: #9DA5AF;
+        background: #9da5af;
         border: none;
 
         &:hover {
-          background: #97AB0D;
+          background: #97ab0d;
         }
       }
     }
-
   }
 }
 </style>
