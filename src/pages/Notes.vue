@@ -35,6 +35,10 @@ export default {
     openModal() {
       this.$emit("openModalNote", true);
     },
+
+    pushNewNoteData(dataNewNote) {
+      this.notes.push(dataNewNote)
+    }
   },
 
   async created() {

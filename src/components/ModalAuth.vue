@@ -173,7 +173,7 @@ export default {
         headers: {
           "Content-Type": "application/json",
         },
-      }).then((response) => {
+      }).then(response => {
         if (response.ok) {
           this.closeModal();
           location.reload()

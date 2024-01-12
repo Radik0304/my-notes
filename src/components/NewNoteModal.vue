@@ -77,6 +77,7 @@ export default {
       if(response.ok) {
         console.log('Заметка создана')
         this.closeModal()
+        location.reload()
       } else {
         console.log('Ошибка создания заявки')
       }
