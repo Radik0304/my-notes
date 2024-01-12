@@ -80,6 +80,7 @@ export default {
         method: "DELETE",
       });
       localStorage.removeItem("token");
+      location.reload()
       if (!this.login) {
         this.$emit("authStatus", false);
       }
@@ -161,22 +162,32 @@ export default {
       display: inline-block;
 
       &:hover .unauth__dropdown-content {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
     &__dropdown-content {
       display: none;
       position: absolute;
-      background-color: #f1f1f1;
+      width: 100px;
+      height: 100px;
+      right: -21px;
+      background-color: #1B2F46;
       z-index: 1;
+      border-radius: 12px;
 
       button {
         cursor: pointer;
-        background: #9da5af;
+        background: inherit;
         border: none;
+        color: #B1C909;
+        font-family: 'Montserrat';
+        font-weight: 700;
+        font-size: 18px;
 
         &:hover {
-          background: #97ab0d;
+          color: #97ab0d;
         }
       }
     }

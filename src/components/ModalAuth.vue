@@ -176,6 +176,7 @@ export default {
       }).then((response) => {
         if (response.ok) {
           this.closeModal();
+          location.reload()
         } else {
           this.login_error = true;
           return;
