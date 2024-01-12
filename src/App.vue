@@ -4,7 +4,6 @@
     <TheNotesPage
       v-if="is_auth_user"
       @authStatus="authStatus"
-      @openModalNote=openModalNote
     />
     <TheMainPage v-else/>
     <ModalAuth 
@@ -12,10 +11,6 @@
       v-if="is_open_modal" 
       @closeModal=closeModal
       @changeModal=changeModal
-    />
-    <NewNoteModal
-      v-if="is_open_modal_note"
-      @openModalNote=openModalNote
     />
   </div>
 </template>
@@ -25,7 +20,6 @@ import TheMainPage from "./pages/Main.vue";
 import TheNotesPage from './pages/Notes.vue'
 import TheHeader from "./components/TheHeader.vue";
 import ModalAuth from './components/ModalAuth.vue';
-import NewNoteModal from './components/NewNoteModal.vue';
 
 export default {
   name: "App",
@@ -34,12 +28,10 @@ export default {
     TheNotesPage,
     TheHeader,
     ModalAuth,
-    NewNoteModal,
   },
 
   data: () => ({
     is_open_modal: false,
-    is_open_modal_note: false,
     modal_type: '',
     is_auth_user: false,
   }),
@@ -48,10 +40,6 @@ export default {
     openModal(typeModal) {
       this.is_open_modal = true;
       this.modal_type= typeModal;
-    },
-
-    openModalNote(status) {
-      this.is_open_modal_note = status
     },
 
     closeModal() {

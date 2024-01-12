@@ -1,60 +1,83 @@
 <template>
   <div class="notes">
-    <div class="notes__list" v-for="note in notes" :key="note.id">
+    <div
+      class="notes__list"
+      v-for="note in notes"
+      :key="note.id"
+    >
       <OneNote
         :note_header="note.title"
         :note_text="note.content"
         :note_id="note.id"
+        @deleteNote="deleteNote"
       />
     </div>
     <div class="notes__footer">
-      <button class="add-note" @click="openModal">
+      <button
+        class="add-note"
+        @click="openModalNote(true)"
+      >
         <img
           src="../assets/add-note.svg"
           alt="add-note-icon"
         />
       </button>
     </div>
+
+    <NewNoteModal
+      v-if="is_open_modal_note"
+      @pushNewNoteData="pushNewNoteData"
+      @openModalNote="openModalNote"
+    />
   </div>
 </template>
 
 <script>
 import OneNote from "@/components/OneNote.vue";
+import NewNoteModal from "@/components/NewNoteModal.vue";
 
 export default {
   name: "TheNotesPage",
   components: {
     OneNote,
+    NewNoteModal,
   },
 
   data: () => ({
     notes: [],
+    is_open_modal_note: false,
   }),
 
   methods: {
-    openModal() {
-      this.$emit("openModalNote", true);
+    openModalNote(status) {
+      this.is_open_modal_note = status;
     },
 
     pushNewNoteData(dataNewNote) {
-      this.notes.push(dataNewNote)
-    }
+      this.notes.push(dataNewNote);
+    },
+
+    deleteNote(idNote) {
+      this.notes = this.notes.filter(
+        (note) => note.id !== idNote
+      );
+    },
   },
 
   async created() {
-    await fetch("https://dist.nd.ru/api/notes",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          },
-        }
-      )
-      .then(response => response.json())
-      .then(data => {
-          this.notes = data
+    await fetch("https://dist.nd.ru/api/notes", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(
+          "token"
+        )}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        this.notes = data;
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   },

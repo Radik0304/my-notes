@@ -29,8 +29,7 @@ export default {
         }
       )
       if(response.ok) {
-        console.log('заметка удалена')
-        location.reload()
+        this.$emit('deleteNote', this.note_id)
       } else {
         console.log('ошибка удаления')
       }

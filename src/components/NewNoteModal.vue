@@ -64,7 +64,7 @@ export default {
         title: this.input_value,
         content: this.textarea_value,
       }
-      const response = await fetch('https://dist.nd.ru/api/notes',
+      await fetch('https://dist.nd.ru/api/notes',
         {
           method: 'POST',
           body: JSON.stringify(data),
@@ -73,14 +73,14 @@ export default {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           }
         }
-      );
-      if(response.ok) {
-        console.log('Заметка создана')
+      )
+      .then(response => response.json()
+      .then(newNoteData => {
+        this.$emit('pushNewNoteData', newNoteData)
         this.closeModal()
-        location.reload()
-      } else {
-        console.log('Ошибка создания заявки')
-      }
+      })
+      )
+      .catch(err => console.log(err));
     },
   },
 };
