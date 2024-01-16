@@ -1,6 +1,5 @@
 <template>
     <div class="main">
-      <!-- <TheHeader/> -->
       <div class="main__content">
         <section class="main__content-titles">
           <h1>Мои заметки</h1>
@@ -14,13 +13,8 @@
   </template>
   
   <script>
-  // import TheHeader from "../components/TheHeader.vue";
-  
   export default {
     name: 'TheMainPage',
-    components: {
-      // TheHeader,
-    }
   }
   </script>
   

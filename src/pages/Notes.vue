@@ -35,6 +35,7 @@
 <script>
 import OneNote from "@/components/OneNote.vue";
 import NewNoteModal from "@/components/NewNoteModal.vue";
+import { getNotes } from "../utils/Api";
 
 export default {
   name: "TheNotesPage",
@@ -65,14 +66,7 @@ export default {
   },
 
   async created() {
-    await fetch("https://dist.nd.ru/api/notes", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(
-          "token"
-        )}`,
-      },
-    })
+    await getNotes()
       .then((response) => response.json())
       .then((data) => {
         this.notes = data;

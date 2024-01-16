@@ -22,9 +22,7 @@
         login
       }}</span>
       <div class="unauth__container">
-        <button
-          class="header__button-exit"
-        >
+        <button class="header__button-exit">
           <img
             src="../assets/user.svg"
             alt="user-icon"
@@ -39,6 +37,7 @@
 </template>
 
 <script>
+import { login, exit } from "../utils/Auth";
 export default {
   name: "TheHeader",
   props: {
@@ -50,14 +49,7 @@ export default {
   }),
 
   async created() {
-    await fetch("https://dist.nd.ru/api/auth", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(
-          "token"
-        )}`,
-      },
-    })
+    await login()
       .then((response) => response.json())
       .then((data) => {
         this.login = data.email;
@@ -76,11 +68,8 @@ export default {
     },
 
     async exit() {
-      await fetch("https://dist.nd.ru/api/auth", {
-        method: "DELETE",
-      });
-      localStorage.removeItem("token");
-      location.reload()
+      exit();
+      location.reload();
       if (!this.login) {
         this.$emit("authStatus", false);
       }
@@ -173,7 +162,7 @@ export default {
       width: 100px;
       height: 100px;
       right: -21px;
-      background-color: #1B2F46;
+      background-color: #1b2f46;
       z-index: 1;
       border-radius: 12px;
 
@@ -181,8 +170,8 @@ export default {
         cursor: pointer;
         background: inherit;
         border: none;
-        color: #B1C909;
-        font-family: 'Montserrat';
+        color: #b1c909;
+        font-family: "Montserrat";
         font-weight: 700;
         font-size: 18px;
 

@@ -13,17 +13,22 @@
 
       <div class="modal-note__content">
         <h2>{{ modal_header }}</h2>
-        <modal-input 
+        <modal-input
           :inputType="'note'"
           class="input__note-name"
-          @getInputValue=getInputValue
+          @getInputValue="getInputValue"
         />
-        <modal-input 
+        <modal-input
           :inputType="'text'"
-          @getTextareaValue=getTextareaValue
+          @getTextareaValue="getTextareaValue"
         />
         <div class="modal-note__footer">
-          <button class="button" @click="addNote">Добавить</button>
+          <span class="login-error" v-if="error">
+            Проверьте введеные данные
+          </span>
+          <button class="button" @click="addNote">
+            Добавить
+          </button>
         </div>
       </div>
     </div>
@@ -31,7 +36,8 @@
 </template>
 
 <script>
-import ModalInput from './ModalInput.vue';
+import ModalInput from "./ModalInput.vue";
+import { addNote } from "../utils/Api.js";
 
 export default {
   name: "NewNoteModal",
@@ -41,46 +47,44 @@ export default {
 
   data: () => ({
     modal_header: "Добавление заметки",
-    input_value: '',
-    textarea_value: '',
+    input_value: "",
+    textarea_value: "",
+    error: false,
   }),
 
   methods: {
     closeModal() {
-      this.$emit('openModalNote', false)
+      this.$emit("openModalNote", false);
     },
 
-    getInputValue(inputValue){
-        this.input_value = inputValue;
+    getInputValue(inputValue) {
+      this.input_value = inputValue;
     },
 
     getTextareaValue(textareaValue) {
       this.textarea_value = textareaValue;
     },
-    
 
     async addNote() {
       const data = {
         title: this.input_value,
         content: this.textarea_value,
-      }
-      await fetch('https://dist.nd.ru/api/notes',
-        {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+      };
+      await addNote(data)
+        .then((response) => {
+          if (!response.ok) {
+            this.error = true;
+            return;
           }
-        }
-      )
-      .then(response => response.json()
-      .then(newNoteData => {
-        this.$emit('pushNewNoteData', newNoteData)
-        this.closeModal()
-      })
-      )
-      .catch(err => console.log(err));
+          response.json().then((newNoteData) => {
+            this.$emit(
+              "pushNewNoteData",
+              newNoteData
+            );
+            this.closeModal();
+          });
+        })
+        .catch((err) => console.log(err));
     },
   },
 };
@@ -91,7 +95,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(10, 31, 56, .7);
+  background: rgba(10, 31, 56, 0.7);
   position: absolute;
   top: 0;
   height: 100%;
@@ -124,8 +128,11 @@ export default {
 
   &__footer {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     margin-top: 8px;
+    gap: 2rem;
 
     div {
       width: 100%;
@@ -133,21 +140,22 @@ export default {
       align-items: center;
       justify-content: space-between;
     }
-      button {
-        font-family: "Montserrat";
-        color: #fff;
-        background: #b1c909;
-        border: none;
-        font-weight: 500;
-        font-size: 20px;
-        cursor: pointer;
-        width: 150px;
-        height: 56px;
-        border-radius: 32px;
-      }
+    button {
+      font-family: "Montserrat";
+      color: #fff;
+      background: #b1c909;
+      border: none;
+      font-weight: 500;
+      font-size: 20px;
+      cursor: pointer;
+      width: 150px;
+      height: 56px;
+      border-radius: 32px;
+    }
   }
   &__content {
     margin: 80px;
+    margin-bottom: 30px;
     font-size: 18px;
 
     h2 {
@@ -162,7 +170,13 @@ export default {
         }
       }
     }
-
+  }
+  .login-error {
+    background: #ff74611a;
+    color: #ff7461;
+    border-radius: 24px;
+    display: block;
+    margin-top: 20px;
   }
 }
 </style>

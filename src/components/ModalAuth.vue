@@ -94,7 +94,7 @@
             </span>
             <button
               class="button button__registation"
-              @click="registation"
+              @click="registration"
             >
               <span>Зарегистрироваться</span>
             </button>
@@ -118,6 +118,11 @@
 </template>
 
 <script>
+import {
+  auth,
+  registration,
+} from "../utils/Auth";
+
 export default {
   name: "TheModal",
   components: {},
@@ -161,59 +166,53 @@ export default {
       this.$emit("changeModal", "auth");
     },
 
-    // авторизация
     async auth() {
       const authData = {
         email: this.input_email,
         password: this.input_password,
       };
-      await fetch("https://dist.nd.ru/api/auth", {
-        method: "POST",
-        body: JSON.stringify(authData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then(response => {
-        if (response.ok) {
-          this.closeModal();
-          location.reload()
-        } else {
+      await auth(authData)
+        .then((response) => {
+          if (response.ok) {
+            this.closeModal();
+            location.reload();
+          } else {
+            this.login_error = true;
+            return;
+          }
+          response.json().then((data) => {
+            localStorage.setItem(
+              "token",
+              data.accessToken
+            );
+          });
+        })
+        .catch(() => {
           this.login_error = true;
-          return;
-        }
-        response.json().then((data) => {
-          localStorage.setItem(
-            "token",
-            data.accessToken
-          );
+          console.log("Ошибка авторизации");
         });
-      });
     },
 
-    // регистрация
-    async registation() {
-      const authData = {
+    async registration() {
+      const regData = {
         email: this.input_email,
         password: this.input_password,
         confirm_password:
           this.input_confirm_password,
       };
-      const response = await fetch(
-        "https://dist.nd.ru/api/reg",
-        {
-          method: "POST",
-          body: JSON.stringify(authData),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response.ok) {
-        this.goToAuth();
-        this.registration_error = false;
-      } else {
-        this.registration_error = true;
-      }
+      await registration(regData)
+        .then((response) => {
+          if (response.ok) {
+            this.registration_error = false;
+            this.goToAuth();
+          } else {
+            this.registration_error = true;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.registration_error = true;
+        });
     },
   },
 };
@@ -259,6 +258,11 @@ export default {
       right: 20px;
       top: 20px;
       cursor: pointer;
+    }
+
+    .button-close:hover {
+      background-color: #819400;
+      transition: all 0.3s ease-in-out;
     }
   }
 

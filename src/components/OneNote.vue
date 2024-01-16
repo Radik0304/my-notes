@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { deleteNote } from "../utils/Api";
+
 export default {
   name: "OneNote",
   props: {
@@ -20,21 +22,22 @@ export default {
 
   methods: {
     async deleteNote() {
-      const response = await fetch(`https://dist.nd.ru/api/notes/${this.note_id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          },
-        }
-      )
-      if(response.ok) {
-        this.$emit('deleteNote', this.note_id)
-      } else {
-        console.log('ошибка удаления')
-      }
-    }
-  }
+      await deleteNote(this.note_id)
+        .then((response) => {
+          if (response.ok) {
+            alert("Заметка удалена");
+            this.$emit(
+              "deleteNote",
+              this.note_id
+            );
+          } else {
+            alert("Неизвестная ошибка");
+            return;
+          }
+        })
+        .catch((err) => console.log(err));
+    },
+  },
 };
 </script>
 
@@ -76,7 +79,8 @@ export default {
     margin-bottom: 8px;
   }
 
-  h4, span {
+  h4,
+  span {
     text-align: start;
     padding-left: 28px;
   }
