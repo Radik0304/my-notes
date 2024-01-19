@@ -1,17 +1,17 @@
 <template>
   <div class="notes">
-    <div
+    <ul
       class="notes__list"
-      v-for="note in notes"
-      :key="note.id"
     >
+    <li v-for="note in notes" :key="note.id">
       <OneNote
         :note_header="note.title"
         :note_text="note.content"
         :note_id="note.id"
         @deleteNote="deleteNote"
       />
-    </div>
+    </li>
+  </ul>
     <div class="notes__footer">
       <button
         class="add-note"
