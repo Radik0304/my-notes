@@ -1,24 +1,24 @@
-# my-notes
+# My notes
 
-## Project setup
-```
-npm install
-```
+## Описание
+Данный проект предоставляет возможность создавать и удалять заметки. <br/>
+Осуществлен функционал регистрации и авторизации пользователя.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### Используемые технологии
+В процессе разработки намерено были использованы только HTML, Sass, Vue без посторонних библиотек экосистемы.<br/>
+Используемые Api запросы https://dist.nd.ru/docs
 
-### Compiles and minifies for production
+### Установка
+* Клонировать проект на локальную машину
 ```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
+git clone https://github.com/Radik0304/my-notes.git
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+* Установить зависимости
+```
+npm i
+```
+* Запустить проект
+```
+npm start
+```
